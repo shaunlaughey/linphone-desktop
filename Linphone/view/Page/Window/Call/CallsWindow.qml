@@ -45,7 +45,37 @@ AbstractWindow {
     property Item firstButtonInBottomTab : mainWindow.startingCall ? endCallButton : (videoCameraButton.visible && videoCameraButton.enabled ? videoCameraButton : audioMicrophoneButton)
     property Item lastButtonInBottomTab : mainWindow.startingCall ? Utils.getLastFocusableItemInItem(controlCallButtons) : endCallButton
 
+    property bool callWindowReady: false
+    property bool automaticKeypadHandled: false
+
+    function showAutomaticKeypad() {
+        if (!callWindowReady || !call || isConference || automaticKeypadHandled)
+            return
+        if (callState !== LinphoneEnums.CallState.OutgoingInit
+                && callState !== LinphoneEnums.CallState.OutgoingProgress
+                && callState !== LinphoneEnums.CallState.OutgoingRinging
+                && callState !== LinphoneEnums.CallState.OutgoingEarlyMedia
+                && callState !== LinphoneEnums.CallState.Connected
+                && callState !== LinphoneEnums.CallState.StreamsRunning)
+            return
+        automaticKeypadHandled = true
+        if (SettingsCpp.showTelKeypadAutomatically) {
+            rightPanel.visible = true
+            rightPanel.replace(dialerPanel)
+        }
+    }
+
+    Component.onCompleted: {
+        callWindowReady = true
+        Qt.callLater(showAutomaticKeypad)
+    }
+    onCallChanged: {
+        automaticKeypadHandled = false
+        Qt.callLater(showAutomaticKeypad)
+    }
+
     onCallStateChanged: {
+        Qt.callLater(showAutomaticKeypad)
         if (callState === LinphoneEnums.CallState.Connected) {
             if (middleItemStackView.currentItem.objectName != "inCallItem") {
                 middleItemStackView.replace(inCallItem)

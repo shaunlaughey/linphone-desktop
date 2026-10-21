@@ -147,6 +147,9 @@ public:
 	bool getAutoAnswerEnabled() const;
 	void setAutoAnswerEnabled(bool enabled);
 
+	bool getShowTelKeypadAutomatically() const;
+	void setShowTelKeypadAutomatically(bool enabled);
+
 	bool getKeepCallViewInBackground() const;
 	void setKeepCallViewInBackground(bool keep);
 
@@ -294,6 +297,7 @@ signals:
 	void noiseSuppressionEnabledChanged(bool enabled);
 	void automaticallyRecordCallsEnabledChanged(bool enabled);
 	void autoAnswerEnabledChanged(bool enabled);
+	void showTelKeypadAutomaticallyChanged(bool enabled);
 	void keepCallViewInBackgroundChanged(bool keep);
 
 	void callToneIndicationsEnabledChanged(bool enabled);

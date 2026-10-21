@@ -1449,6 +1449,11 @@
 <context>
     <name>CallSettingsLayout</name>
     <message>
+        <source>settings_calls_show_tel_keypad_automatically_title</source>
+        <extracomment>&quot;Show DTMF keypad automatically during calls&quot;</extracomment>
+        <translation>Show DTMF keypad automatically during calls</translation>
+    </message>
+    <message>
         <location filename="../../view/Page/Layout/Settings/CallSettingsLayout.qml" line="23"/>
         <source>settings_call_devices_title</source>
         <extracomment>&quot;Périphériques&quot;</extracomment>

@@ -58,6 +58,8 @@ public:
 	               NOTIFY callToneIndicationsEnabledChanged)
 	Q_PROPERTY(
 	    bool autoAnswerEnabled READ getAutoAnswerEnabled WRITE setAutoAnswerEnabled NOTIFY autoAnswerEnabledChanged)
+	Q_PROPERTY(bool showTelKeypadAutomatically READ getShowTelKeypadAutomatically WRITE setShowTelKeypadAutomatically
+	               NOTIFY showTelKeypadAutomaticallyChanged)
 	Q_PROPERTY(bool autoAnswerActive READ getAutoAnswerActive NOTIFY autoAnswerActiveChanged)
 	Q_PROPERTY(bool keepCallViewInBackground READ getKeepCallViewInBackground WRITE setKeepCallViewInBackground NOTIFY
 	               keepCallViewInBackgroundChanged)
@@ -201,6 +203,11 @@ public:
 		return mAutoAnswerEnabled;
 	}
 	void setAutoAnswerEnabled(bool enabled);
+
+	bool getShowTelKeypadAutomatically() {
+		return mShowTelKeypadAutomatically;
+	}
+	void setShowTelKeypadAutomatically(bool enabled);
 
 	bool getAutoAnswerActive() {
 		return mAutoAnswerActive;
@@ -389,6 +396,7 @@ signals:
 	void automaticallyRecordCallsEnabledChanged();
 	void callToneIndicationsEnabledChanged();
 	void autoAnswerEnabledChanged();
+	void showTelKeypadAutomaticallyChanged();
 	void autoAnswerActiveChanged();
 	void keepCallViewInBackgroundChanged();
 
@@ -499,6 +507,7 @@ private:
 	bool mAutomaticallyRecordCallsEnabled;
 	bool mCallToneIndicationsEnabled;
 	bool mAutoAnswerEnabled;
+	bool mShowTelKeypadAutomatically;
 	bool mAutoAnswerActive;
 	bool mKeepCallViewInBackground;
 	bool mKeepCallViewInBackgroundActive;

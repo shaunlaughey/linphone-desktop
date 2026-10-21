@@ -84,6 +84,13 @@ AbstractSettingsLayout {
             }
             SwitchSetting {
                 Layout.fillWidth: true
+                //: "Show DTMF keypad automatically during calls"
+                titleText: qsTr("settings_calls_show_tel_keypad_automatically_title")
+                propertyName: "showTelKeypadAutomatically"
+                propertyOwner: SettingsCpp
+            }
+            SwitchSetting {
+                Layout.fillWidth: true
                 //: "Afficher la vue d'appel en arrière-plan"
                 titleText: qsTr("settings_calls_call_view_in_background_title")
                 //: "La fenêtre d'appel ne passera pas au premier plan"

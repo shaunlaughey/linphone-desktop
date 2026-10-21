@@ -54,6 +54,7 @@ SettingsCore::SettingsCore(QObject *parent) : QObject(parent) {
 	mDisplayNotificationContent = settingsModel->getDisplayNotificationContent();
 	mAutomaticallyRecordCallsEnabled = settingsModel->getAutomaticallyRecordCallsEnabled();
 	mAutoAnswerEnabled = settingsModel->getAutoAnswerEnabled();
+	mShowTelKeypadAutomatically = settingsModel->getShowTelKeypadAutomatically();
 	mAutoAnswerActive = mAutoAnswerEnabled;
 	mKeepCallViewInBackground = settingsModel->getKeepCallViewInBackground();
 	mKeepCallViewInBackgroundActive = mKeepCallViewInBackground;
@@ -181,6 +182,7 @@ SettingsCore::SettingsCore(const SettingsCore &settingsCore) {
 	mDisplayNotificationContent = settingsCore.mDisplayNotificationContent;
 	mAutomaticallyRecordCallsEnabled = settingsCore.mAutomaticallyRecordCallsEnabled;
 	mAutoAnswerEnabled = settingsCore.mAutoAnswerEnabled;
+	mShowTelKeypadAutomatically = settingsCore.mShowTelKeypadAutomatically;
 	mAutoAnswerActive = settingsCore.mAutoAnswerActive;
 	mKeepCallViewInBackground = settingsCore.mKeepCallViewInBackground;
 	mKeepCallViewInBackgroundActive = settingsCore.mKeepCallViewInBackgroundActive;
@@ -277,6 +279,7 @@ void SettingsCore::reloadSettings() {
 	setDisplayNotificationContent(settingsModel->getDisplayNotificationContent());
 	setAutomaticallyRecordCallsEnabled(settingsModel->getAutomaticallyRecordCallsEnabled());
 	setAutoAnswerEnabled(settingsModel->getAutoAnswerEnabled());
+	setShowTelKeypadAutomatically(settingsModel->getShowTelKeypadAutomatically());
 	setAutoAnswerActive(settingsModel->getAutoAnswerEnabled());
 	setKeepCallViewInBackground(settingsModel->getKeepCallViewInBackground());
 	mKeepCallViewInBackgroundActive = settingsModel->getKeepCallViewInBackground();
@@ -456,6 +459,11 @@ void SettingsCore::setSelf(QSharedPointer<SettingsCore> me) {
 	mSettingsModelConnection->makeConnectToModel(
 	    &SettingsModel::automaticallyRecordCallsEnabledChanged, [this](const bool enabled) {
 		    mSettingsModelConnection->invokeToCore([this, enabled]() { setAutomaticallyRecordCallsEnabled(enabled); });
+	    });
+
+	mSettingsModelConnection->makeConnectToModel(
+	    &SettingsModel::showTelKeypadAutomaticallyChanged, [this](const bool enabled) {
+		    mSettingsModelConnection->invokeToCore([this, enabled]() { setShowTelKeypadAutomatically(enabled); });
 	    });
 
 	// Auto answer
@@ -738,6 +746,7 @@ void SettingsCore::reset(const SettingsCore &settingsCore) {
 	setNoiseSuppressionEnabled(settingsCore.mNoiseSuppressionEnabled);
 	setAutomaticallyRecordCallsEnabled(settingsCore.mAutomaticallyRecordCallsEnabled);
 	setAutoAnswerEnabled(settingsCore.mAutoAnswerEnabled);
+	setShowTelKeypadAutomatically(settingsCore.mShowTelKeypadAutomatically);
 	setAutoAnswerActive(settingsCore.mAutoAnswerActive);
 	setKeepCallViewInBackground(settingsCore.mKeepCallViewInBackground);
 	mKeepCallViewInBackgroundActive = settingsCore.mKeepCallViewInBackgroundActive;
@@ -932,6 +941,14 @@ void SettingsCore::setAutoAnswerEnabled(bool enabled) {
 	if (mAutoAnswerEnabled != enabled) {
 		mAutoAnswerEnabled = enabled;
 		emit autoAnswerEnabledChanged();
+		setIsSaved(false);
+	}
+}
+
+void SettingsCore::setShowTelKeypadAutomatically(bool enabled) {
+	if (mShowTelKeypadAutomatically != enabled) {
+		mShowTelKeypadAutomatically = enabled;
+		emit showTelKeypadAutomaticallyChanged();
 		setIsSaved(false);
 	}
 }
@@ -1434,6 +1451,7 @@ void SettingsCore::writeIntoModel(std::shared_ptr<SettingsModel> model) const {
 	model->setNoiseSuppressionEnabled(mNoiseSuppressionEnabled);
 	model->setAutomaticallyRecordCallsEnabled(mAutomaticallyRecordCallsEnabled);
 	model->setAutoAnswerEnabled(mAutoAnswerEnabled);
+	model->setShowTelKeypadAutomatically(mShowTelKeypadAutomatically);
 	model->setKeepCallViewInBackground(mKeepCallViewInBackground);
 
 	// Chat
@@ -1509,6 +1527,7 @@ void SettingsCore::writeFromModel(const std::shared_ptr<SettingsModel> &model) {
 	mNoiseSuppressionEnabled = model->getNoiseSuppressionEnabled();
 	mAutomaticallyRecordCallsEnabled = model->getAutomaticallyRecordCallsEnabled();
 	mAutoAnswerEnabled = model->getAutoAnswerEnabled();
+	mShowTelKeypadAutomatically = model->getShowTelKeypadAutomatically();
 	mAutoAnswerActive = mAutoAnswerEnabled;
 	mKeepCallViewInBackground = model->getKeepCallViewInBackground();
 	mKeepCallViewInBackgroundActive = mKeepCallViewInBackground;

@@ -600,6 +600,19 @@ void SettingsModel::setAutoAnswerEnabled(bool enabled) {
 	}
 }
 
+bool SettingsModel::getShowTelKeypadAutomatically() const {
+	mustBeInLinphoneThread(log().arg(Q_FUNC_INFO));
+	return !!mConfig->getInt(UiSection, "show_tel_keypad_automatically", 0);
+}
+
+void SettingsModel::setShowTelKeypadAutomatically(bool enabled) {
+	mustBeInLinphoneThread(log().arg(Q_FUNC_INFO));
+	if (enabled != getShowTelKeypadAutomatically()) {
+		mConfig->setInt(UiSection, "show_tel_keypad_automatically", enabled);
+		emit showTelKeypadAutomaticallyChanged(enabled);
+	}
+}
+
 bool SettingsModel::getKeepCallViewInBackground() const {
 	mustBeInLinphoneThread(log().arg(Q_FUNC_INFO));
 	return !!mConfig->getInt(UiSection, "keep_calls_window_in_background", 0);
